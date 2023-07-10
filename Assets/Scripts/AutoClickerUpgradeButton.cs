@@ -3,6 +3,11 @@
 public class AutoClickerUpgrade : Upgrade
 {
     public ulong pointAmt = 10;
+    public void Setup()
+    {
+        type = UpgradeType.Timed;
+        name = "default auto-clicker";
+    }
     public override void Apply(GameManager gameManager)
     {
         gameManager.Score += pointAmt;
@@ -18,11 +23,20 @@ public class AutoClickerUpgradeButton : UpgradeButtonBase
     {
         level = 1;
         price = 1000;
-        nextUpgrade = new AutoClickerUpgrade();
+        AutoClickerUpgrade newAutoClicker = new AutoClickerUpgrade();
+        newAutoClicker.Setup();
+        nextUpgrade = newAutoClicker;
     }
 
-    protected override void OnPurchase()
+    public override void OnPurchase()
     {
+        //Check if has enough points
+        if (gameManager.Score < price)
+        {
+            Debug.Log("Not enouph points"); // TODO create in-game dialogue
+            return;
+        }
+        gameManager.Score -= price;
         gameManager.AddOrUpdateUpgrade(lastUpgrade, nextUpgrade);
         lastUpgrade = nextUpgrade;
         pointAmt *= pointInc;
@@ -30,6 +44,7 @@ public class AutoClickerUpgradeButton : UpgradeButtonBase
         ++level;
 
         AutoClickerUpgrade next = new AutoClickerUpgrade();
+        next.Setup();
         next.pointAmt = pointAmt;
         nextUpgrade = next;
     }

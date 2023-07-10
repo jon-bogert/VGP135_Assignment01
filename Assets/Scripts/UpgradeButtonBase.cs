@@ -25,7 +25,7 @@ public class UpgradeButtonBase : MonoBehaviour
     virtual protected void Setup() { }
 
     //What happens when item is purchased
-    virtual protected void OnPurchase() { }
+    virtual public void OnPurchase() { }
 }
 
 //BaseClass or the Upgrade itself

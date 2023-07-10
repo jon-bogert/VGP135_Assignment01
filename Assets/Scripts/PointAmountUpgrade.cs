@@ -11,8 +11,15 @@ public class PointAmountUpgrade : UpgradeButtonBase
         price = 50;
     }
 
-    protected override void OnPurchase()
+    public override void OnPurchase()
     {
+        //Check if has enough points
+        if (gameManager.Score < price)
+        {
+            Debug.Log("Not enouph points"); // TODO create in-game dialogue
+            return;
+        }
+        gameManager.Score -= price;
         gameManager.ClickAmount = nextPointMultiplier;
         nextPointMultiplier += pointInc;
         price *= priceInc;

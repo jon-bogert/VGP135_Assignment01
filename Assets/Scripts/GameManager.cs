@@ -21,7 +21,17 @@ public class GameManager : MonoBehaviour
     // Properties
     public ulong ClickAmount { get { return _clickAmt; } set { _clickAmt = value; } }
     public string ScoreText { get { return _scoreTextLabel + _score.ToString(); } }
-    public ulong Score { get { return _score; } set { _score = value; } }
+    public ulong Score {
+        get
+        {
+            return _score;
+        }
+        set
+        {
+            _score = value;
+            clickPerformed?.Invoke();
+        }
+    }
 
 
     private void Update()
@@ -33,6 +43,7 @@ public class GameManager : MonoBehaviour
                 _timedUpgrades[i].Apply(this);
                 _timedUpgrades[i].timer -= _timedUpgrades[i].triggerTime;
             }
+            _timedUpgrades[i].timer += Time.deltaTime;
         }
     }
 
@@ -49,11 +60,11 @@ public class GameManager : MonoBehaviour
 
     public void AddOrUpdateUpgrade(Upgrade lastUpgrade, Upgrade newUpgrade)
     {
-        if (lastUpgrade.Type == newUpgrade.Type)
+        if (lastUpgrade != null && lastUpgrade.Type != newUpgrade.Type)
             return;
 
         List<Upgrade> upgrades;
-        switch (lastUpgrade.Type)
+        switch (newUpgrade.Type)
         {
             case UpgradeType.Click:
                 upgrades = _onClickUpgrades;
@@ -66,7 +77,7 @@ public class GameManager : MonoBehaviour
                 return;
         }
 
-        if (!(lastUpgrade is null))
+        if (lastUpgrade != null)
         {
             upgrades.Remove(lastUpgrade);
         }

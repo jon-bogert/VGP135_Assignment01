@@ -3,13 +3,36 @@ using UnityEngine;
 
 public class UpgradesWindow : MonoBehaviour
 {
-    [SerializeField] List<GameObject> buttonPrefabs;
+    [SerializeField] GameObject _gridObject;
+    [SerializeField] List<GameObject> _buttonPrefabs;
     
-    List<UpgradeButtonBase> buttons;
+    List<UpgradeButtonBase> _buttons = new List<UpgradeButtonBase>();
 
-
-    private void Awake()
+    private void Start()
     {
-        // TODO - Instantiate buttons in grid and populate button list
+        foreach (GameObject b in _buttonPrefabs)
+        {
+            UpgradeButtonBase buttonObj = Instantiate(b, _gridObject.transform).GetComponent<UpgradeButtonBase>();
+            if (buttonObj is null)
+            {
+                Debug.LogWarning("Upgrades Window -> Could not find Upgrade Button Base Component");
+            }
+            else
+            {
+                _buttons.Add(buttonObj);
+            }
+        }
+
+        if (gameObject.activeSelf)
+            gameObject.SetActive(false);
+    }
+    public void ToggleMenu()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
+    }
+
+    public void ExitMenu()
+    {
+        gameObject.SetActive(false);
     }
 }
