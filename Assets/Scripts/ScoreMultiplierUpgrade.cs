@@ -15,6 +15,6 @@ public class ScoreMultiplierUpgrade : UpgradeButtonBase
 
     public override void OnPurchase()
     {
-        gameManager.Score *= multiplyAmount;
+        gameManager.Score = gameManager.Score * multiplyAmount;
     }
 }
