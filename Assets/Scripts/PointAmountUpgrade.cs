@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class PointAmountUpgrade : UpgradeButtonBase
 {
+    [SerializeField] TMP_Text levelCostText;
     ulong nextPointMultiplier = 5;
     ushort pointInc = 5;
     ushort priceInc = 2;
@@ -9,6 +11,7 @@ public class PointAmountUpgrade : UpgradeButtonBase
     {
         level = 1;
         price = 50;
+        UpdateText();
     }
 
     public override void OnPurchase()
@@ -24,5 +27,11 @@ public class PointAmountUpgrade : UpgradeButtonBase
         nextPointMultiplier += pointInc;
         price *= priceInc;
         level += 1;
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        levelCostText.text = "Level: " + level.ToString() + "\nCost: " + price.ToString() + " Pts";
     }
 }

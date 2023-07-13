@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using TMPro;
 
 public class AutoClickerUpgrade : Upgrade
 {
@@ -16,6 +17,8 @@ public class AutoClickerUpgrade : Upgrade
 
 public class AutoClickerUpgradeButton : UpgradeButtonBase
 {
+    [SerializeField] TMP_Text levelCostText;
+
     ushort priceInc = 10;
     ulong pointAmt = 10;
     ushort pointInc = 10;
@@ -26,6 +29,7 @@ public class AutoClickerUpgradeButton : UpgradeButtonBase
         AutoClickerUpgrade newAutoClicker = new AutoClickerUpgrade();
         newAutoClicker.Setup();
         nextUpgrade = newAutoClicker;
+        UpdateText();
     }
 
     public override void OnPurchase()
@@ -47,5 +51,10 @@ public class AutoClickerUpgradeButton : UpgradeButtonBase
         next.Setup();
         next.pointAmt = pointAmt;
         nextUpgrade = next;
+        UpdateText();
+    }
+    void UpdateText()
+    {
+        levelCostText.text = "Level: " + level.ToString() + "\nCost: " + price.ToString() + " Pts";
     }
 }
